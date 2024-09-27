@@ -1,0 +1,14 @@
+# Use the official Java runtime as a parent image
+FROM openjdk:11-jre-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built application JAR file into the container
+COPY build/libs/core-services-1.0-SNAPSHOT-all.jar /app/core-services-1.0-SNAPSHOT-all.jar
+
+# Expose the port your gRPC server runs on
+EXPOSE 50051
+
+# Command to run your application
+CMD ["java", "-jar", "core-services-1.0-SNAPSHOT-all.jar"]

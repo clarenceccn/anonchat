@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy
+  namespace: infrastructure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envoy
+  template:
+    metadata:
+      labels:
+        app: envoy
+    spec:
+      containers:
+        - name: envoy
+          image: envoyproxy/envoy:v1.31.2
+          ports:
+            - containerPort: 8080
+            - containerPort: 9901
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /etc/envoy/envoy.yaml
+              subPath: envoy.yaml
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: envoy-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy-service
+  namespace: infrastructure
+spec:
+  ports:
+    - name: http   # Added port name
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: admin  # Added port name
+      port: 9901
+      targetPort: 9901
+      protocol: TCP
+  selector:
+    app: envoy
+  type: LoadBalancer   # Exposes Envoy service to external clients

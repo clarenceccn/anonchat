@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package org.devteam1.chatroom;
+// Importing the Google-provided Empty message type
+import "google/protobuf/empty.proto";
+
+service ChatRoom {
+  rpc JoinChat(stream ChatMessage) returns (stream ChatMessage);
+  rpc subscribeToMessages(ChatMessageRequest) returns (stream ChatMessage);
+  rpc sendMessages(stream ChatMessage) returns (ChatMessage);
+  rpc sendMessage(ChatMessage) returns (StringMessage);
+  rpc createChatRoom(google.protobuf.Empty) returns (Chatroom);
+}
+
+message ChatMessage {
+  string chatRoomId = 1;
+  string username = 2;
+  string message = 3;
+  string timestamp = 4;
+}
+
+message Chatroom {
+  string chatRoomId = 1;
+  string createdOn = 2;
+  bool isOwner = 3;
+  string username = 4;
+  string url = 5;
+}
+
+message ChatMessageRequest {
+  string chatroomId = 1;
+  string username = 2;
+  int64 pos = 3;
+}
+
+message StringMessage {
+  string value = 1;
+}
+
+message ChatRoomRequest {
+  string chatRoomId = 1;
+  string username = 2;
+  string createdOn = 3;
+}

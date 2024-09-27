@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package org.devteam1.chatroom;
+
+service ChatRoom {
+  rpc JoinChat(stream ChatMessage) returns (stream ChatMessage);
+  rpc receiveMessages(ChatMessageRequest) returns (stream ChatMessage);
+  rpc subscribeToMessages(ChatMessageRequest) returns (stream ChatMessage);
+  rpc sendMessages(stream ChatMessage) returns (ChatMessage);
+  rpc sendMessage(ChatMessage) returns (StringMessage);
+}
+
+message ChatMessage {
+  string chatRoomId = 1;
+  string username = 2;
+  string message = 3;
+  string timestamp = 4;
+}
+
+message ChatMessageRequest {
+  string chatroomId = 1;
+  string username = 2;
+  int64 pos = 3;
+}
+
+message StringMessage {
+  string value = 1;
+}
