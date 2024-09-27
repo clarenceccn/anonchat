@@ -1,4 +1,4 @@
-**Technologies**
+**Tech stack**
 - gRPC
 - Redis
 - Envoy
@@ -7,10 +7,46 @@
 - Kubernetes
 - GCR (google cloud registry)
 
-**Getting started for backend**
+**Getting started for frontend**
 
-1) Build
+1) Compiling new protobuf changes
+```
+protoc -I=proto/ proto/chat.proto \
+  --js_out=import_style=commonjs,binary:./src/proto \
+  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./src/proto
+  ```
+
+2) Compiling frontend changes
+
+```npm run build```
+
+3) Running local frontend server
+
+```serve -s build```
+
+
+
+***Getting started with kubernetes for backend***
+1) Install docker desktop and enable kubernetes in settings then navigate to *./core-services/deploy/* and run commands below
+```
+kubectl apply -f envoy-config.yaml
+kubectl apply -f envoy-deployment.yaml
+kubectl apply -f grpc-backend-deployment.yaml
+kubectl apply -f redis-deployment.yaml
+```
+
+1) To make code changes and see them, rebuild then update the image and restart kubernetes core-service deployment
+```
 ./gradlew build
+docker build -t grpc-core-service-image:v1.0.0
+kubectl rollout restart deployment -n infrastructure grpc-core-service
+```
+
+**(skip this step, go to the kubernetes step) Getting started for backend**
+
+1) Build with command below
+
+   ```./gradlew build ```
 
 
 2) Running local redis instance
@@ -30,25 +66,7 @@ This step requires a running redis instance at port 6379
 grpcurl -plaintext localhost:50051 org.devteam1.chatroom.ChatRoom/receiveMessages
 ```
 
-**Getting started for frontend**
-
-1) Compiling new protobuf changes
-```
-protoc -I=proto/ proto/chat.proto \
-  --js_out=import_style=commonjs,binary:./src/proto \
-  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./src/proto
-  ```
-
-2) Compiling frontend changes
-
-```npm run build```
-
-3) Running local frontend server 
-
-```serve -s build```
-
-
-***Getting started for proxy server***
+***(skip this step, go to the kubernetes step) Getting started for proxy server***
 
 This is required for Http/1.1 requests from react to have contact with Http/2 grpc backend
 
@@ -72,19 +90,3 @@ This is required for Http/1.1 requests from react to have contact with Http/2 gr
 2) Run the docker image locally
 
    ``` docker run -d -p 50051:50051 --name grpc-backend-container grpc-backend ```
-
-***Getting started with kubernetes for backend***
-
-```
-kubectl apply -f envoy-config.yaml
-kubectl apply -f envoy-deployment.yaml
-kubectl apply -f grpc-backend-deployment.yaml
-kubectl apply -f redis-deployment.yaml
-```
-
-1) Recompiling and updating the image
-```
-./gradlew build
-docker build -t grpc-core-service-image:v1.0.0
-kubectl rollout restart deployment -n infrastructure grpc-core-service
-```
