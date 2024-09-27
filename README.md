@@ -30,7 +30,7 @@ This step requires a running redis instance at port 6379
 grpcurl -plaintext localhost:50051 org.devteam1.chatroom.ChatRoom/receiveMessages
 ```
 
-**Getting started for frontend******
+**Getting started for frontend**
 
 1) Compiling new protobuf changes
 ```
@@ -65,9 +65,13 @@ This is required for Http/1.1 requests from react to have contact with Http/2 gr
  ```
 
 
-***Getting started with docker for backend***
-1) docker build -t grpc-backend .
-1) docker run -d -p 50051:50051 --name grpc-backend-container grpc-backend
+***(skip this step, do kubernetes one) Getting started with docker for backend***
+1) Build the image
+
+   ``` docker build -t grpc-core-services-image:v1.0.0 . ```
+2) Run the docker image locally
+
+   ``` docker run -d -p 50051:50051 --name grpc-backend-container grpc-backend ```
 
 ***Getting started with kubernetes for backend***
 
