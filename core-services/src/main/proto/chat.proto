@@ -25,6 +25,7 @@ message Chatroom {
   bool isOwner = 3;
   string username = 4;
   string url = 5;
+  string ttl = 6;
 }
 
 message ChatMessageRequest {
