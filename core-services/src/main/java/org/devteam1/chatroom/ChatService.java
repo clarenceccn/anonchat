@@ -5,10 +5,12 @@ import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 import org.devteam1.chatroom.Chat.ChatMessage;
 import org.devteam1.chatroom.Chat.ChatMessageRequest;
-import org.devteam1.chatroom.Chat.ChatRoomRequest;
 import org.devteam1.chatroom.Chat.StringMessage;
+import org.devteam1.chatroom.Chat.Chatroom;
 import org.devteam1.db.RedisClient;
+import org.devteam1.util.ShortLinkGenerator;
 
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -24,16 +26,28 @@ public class ChatService extends ChatRoomGrpc.ChatRoomImplBase {
 
     private RedisClient redisClient;
     private final Map<String, Set<ServerCallStreamObserver<ChatMessage>>> subscriptions;
+    private final ShortLinkGenerator shortlinkGenerator;
 
     public ChatService() {
         redisClient = new RedisClient();
         subscriptions = new HashMap<>();
+        shortlinkGenerator = new ShortLinkGenerator();
     }
 
     @Override
     public void createChatRoom(final Empty empty,
-                               final StreamObserver<ChatMessage> responseObserver) {
-
+                               final StreamObserver<Chatroom> responseObserver) {
+//        final Chatroom room = Chatroom.newBuilder()
+//                .setChatRoomId(UUID.randomUUID().toString())
+//                .setCreatedOn(Instant.now().toString())
+//                .setUrl()
+//                .setIsOwner()
+//                .setUsername()
+//                .setTtl()
+//                .build();
+        //1. create chatroom
+        //2. store it with 24 hour ttl
+        //3. return it
     }
 
     @Override
