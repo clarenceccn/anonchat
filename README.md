@@ -7,25 +7,35 @@
 - Kubernetes
 - GCR (google cloud registry)
 
-**Getting started for frontend**
+***Getting started for frontend with Docker/Kubernetes***
 
-1) Compiling new protobuf changes
+1) Install docker-desktop and enable kubernetes
+2) Build docker image 
 ```
-protoc -I=proto/ proto/chat.proto \
-  --js_out=import_style=commonjs,binary:./src/proto \
-  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./src/proto
-  ```
+docker build -t grpc-web-app-frontend:v1.0.0 .
+```
+2) Run the commands below in the grpc-chat-frontend/deploy directory
+```
+kubectl apply -f deployment.yaml
+kubectl apply -f services.yaml
+kubectl apply -f ingress.yaml
+```
+3) Access frontend with URL
+```
+http://localhost:30080
+```
 
-2) Compiling frontend changes
+4) To make updates to the frontend and see the changes, run commands below
 
-```npm run build```
+To build
+```
+docker build -t grpc-web-app-frontend:v1.0.0 .
+```
 
-3) Running local frontend server
-
-```serve -s build```
-
-
-
+To load new changes
+```
+kubectl rollout restart deployment -n frontend grpc-web-app-frontend-deployment
+```
 ***Getting started with kubernetes for backend***
 1) Install docker desktop and enable kubernetes in settings then navigate to *./core-services/deploy/* and run commands below
 ```
@@ -41,6 +51,23 @@ kubectl apply -f redis-deployment.yaml
 docker build -t grpc-core-service-image:v1.0.0
 kubectl rollout restart deployment -n infrastructure grpc-core-service
 ```
+
+**(Skip this and use the docker/kubernetes version) Getting started for frontend**
+
+1) Compiling new protobuf changes
+```
+protoc -I=proto/ proto/chat.proto \
+  --js_out=import_style=commonjs,binary:./src/proto \
+  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./src/proto
+  ```
+
+2) Compiling frontend changes
+
+```npm run build```
+
+3) Running local frontend server
+
+```serve -s build```
 
 **(skip this step, go to the kubernetes step) Getting started for backend**
 

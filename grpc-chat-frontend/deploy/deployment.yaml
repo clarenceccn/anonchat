@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-web-app-frontend-deployment
+  namespace: frontend
+  labels:
+    app: grpc-web-app-frontend
+spec:
+  replicas: 3  # Number of pods to run
+  selector:
+    matchLabels:
+      app: grpc-web-app-frontend
+  template:
+    metadata:
+      labels:
+        app: grpc-web-app-frontend
+    spec:
+      containers:
+        - name: grpc-web-app-frontend
+          image: grpc-web-app-frontend:v1.0.0
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
