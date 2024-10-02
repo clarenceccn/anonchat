@@ -1,0 +1,56 @@
+# Stage 1: Build the gRPC-Web client and React app
+FROM node:18-alpine AS build
+
+# Install required packages for gRPC-Web client code generation
+RUN apk add --no-cache \
+    protobuf \
+    build-base \
+    autoconf \
+    automake \
+    libtool \
+    curl \
+    bash
+
+# Install protoc and the gRPC-Web plugin
+RUN npm install -g grpc-tools protoc-gen-grpc-web ts-protoc-gen
+
+# Ensure the path to grpc-tools binaries (which includes protoc-gen-js) is in PATH
+ENV PATH=/usr/local/lib/node_modules/grpc-tools/bin:$PATH
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json (or yarn.lock) to the container
+COPY package*.json ./
+
+# Install project dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Generate gRPC-Web client code from your .proto files
+# Make sure your .proto files are in a directory like /app/proto
+RUN mkdir -p ./src/grpc && \
+    protoc -I=./proto ./proto/*.proto \
+    --js_out=import_style=commonjs:./src/grpc \
+    --ts_out=./src/grpc
+
+# Generate the gRPC-Web specific TypeScript code separately
+RUN protoc -I=./proto ./proto/*.proto \
+    --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/grpc
+
+# Build the React app for production
+RUN npm run build
+
+# Stage 2: Serve the app using Nginx
+FROM nginx:alpine
+
+# Copy the build output from the first stage to the Nginx web root
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80 for the app to be served
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

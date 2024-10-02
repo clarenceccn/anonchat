@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-web-app-frontend-service
+  namespace: frontend
+spec:
+  selector:
+    app: grpc-web-app-frontend
+  ports:
+    - protocol: TCP
+      port: 80  # Port that Kubernetes will use
+      targetPort: 80  # Port exposed in the container (nginx port)
+      nodePort: 30080  # Custom NodePort, you can change the port
+  type: NodePort  # Internal access within the cluster
