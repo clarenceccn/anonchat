@@ -9,7 +9,7 @@ service ChatRoom {
   rpc subscribeToMessages(ChatMessageRequest) returns (stream ChatMessage);
   rpc sendMessages(stream ChatMessage) returns (ChatMessage);
   rpc sendMessage(ChatMessage) returns (StringMessage);
-  rpc createChatRoom(google.protobuf.Empty) returns (Chatroom);
+  rpc createChatRoom(ChatRoomRequest) returns (Chatroom);
 }
 
 message ChatMessage {
@@ -39,7 +39,5 @@ message StringMessage {
 }
 
 message ChatRoomRequest {
-  string chatRoomId = 1;
-  string username = 2;
-  string createdOn = 3;
+  string username = 1;
 }

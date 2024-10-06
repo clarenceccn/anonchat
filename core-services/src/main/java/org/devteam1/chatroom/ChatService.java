@@ -1,16 +1,15 @@
 package org.devteam1.chatroom;
 
-import com.google.protobuf.Empty;
 import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 import org.devteam1.chatroom.Chat.ChatMessage;
 import org.devteam1.chatroom.Chat.ChatMessageRequest;
+import org.devteam1.chatroom.Chat.ChatRoomRequest;
 import org.devteam1.chatroom.Chat.StringMessage;
 import org.devteam1.chatroom.Chat.Chatroom;
 import org.devteam1.db.RedisClient;
 import org.devteam1.util.ShortLinkGenerator;
 
-import java.time.Instant;
 import java.util.*;
 
 /**
@@ -28,26 +27,20 @@ public class ChatService extends ChatRoomGrpc.ChatRoomImplBase {
     private final Map<String, Set<ServerCallStreamObserver<ChatMessage>>> subscriptions;
     private final ShortLinkGenerator shortlinkGenerator;
 
+    private final ChatRoomManager chatroomManager;
+
     public ChatService() {
         redisClient = new RedisClient();
         subscriptions = new HashMap<>();
-        shortlinkGenerator = new ShortLinkGenerator();
+        shortlinkGenerator = new ShortLinkGenerator(redisClient);
+        chatroomManager = new ChatRoomManager(redisClient, shortlinkGenerator);
     }
 
     @Override
-    public void createChatRoom(final Empty empty,
+    public void createChatRoom(final ChatRoomRequest request,
                                final StreamObserver<Chatroom> responseObserver) {
-//        final Chatroom room = Chatroom.newBuilder()
-//                .setChatRoomId(UUID.randomUUID().toString())
-//                .setCreatedOn(Instant.now().toString())
-//                .setUrl()
-//                .setIsOwner()
-//                .setUsername()
-//                .setTtl()
-//                .build();
-        //1. create chatroom
-        //2. store it with 24 hour ttl
-        //3. return it
+        final Chatroom chatroom = chatroomManager.createChatroom(request.getUsername());
+        responseObserver.onNext(chatroom);
     }
 
     @Override
@@ -60,7 +53,7 @@ public class ChatService extends ChatRoomGrpc.ChatRoomImplBase {
     }
 
     private void loadExistingMessages(final String chatroomId, final StreamObserver<ChatMessage> stream) {
-        List<ChatMessage> messages = redisClient.getChatMessages(chatroomId);
+        List<ChatMessage> messages = chatroomManager.getChatMessages(chatroomId);
         for (final ChatMessage message : messages) {
             stream.onNext(message);
         }
@@ -89,7 +82,7 @@ public class ChatService extends ChatRoomGrpc.ChatRoomImplBase {
     @Override
     public void sendMessage(final ChatMessage message, final StreamObserver<StringMessage> responseObserver) {
         System.out.println("sendMessage: " + message);
-        redisClient.saveMessage(message);
+        chatroomManager.saveMessage(message);
         fanOutMessages(message.getChatRoomId(), message);
         responseObserver.onNext(success());
         responseObserver.onCompleted();
