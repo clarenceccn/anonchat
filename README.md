@@ -19,7 +19,7 @@ docker build -t grpc-web-app-frontend:v1.0.0 .
 ```
 kubectl create namespace frontend
 kubectl apply -f deployment.yaml
-kubectl apply -f services.yaml
+kubectl apply -f service.yaml
 kubectl apply -f ingress.yaml
 ```
 3) Access frontend with URL
