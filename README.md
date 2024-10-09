@@ -39,6 +39,12 @@ To load new changes
 kubectl rollout restart deployment -n frontend grpc-web-app-frontend-deployment
 ```
 ***Getting started with kubernetes for backend***
+0) Build docker image 
+```
+./gradlew build
+docker build -t grpc-core-service-image:v1.0.0 .
+```
+
 1) Install docker desktop and enable kubernetes in settings then navigate to *./core-services/deploy/* and run commands below
 ```
 kubectl create namespace infrastructure
@@ -51,7 +57,7 @@ kubectl apply -f redis-deployment.yaml
 1) To make code changes and see them, rebuild then update the image and restart kubernetes core-service deployment
 ```
 ./gradlew build
-docker build -t grpc-core-service-image:v1.0.0
+docker build -t grpc-core-service-image:v1.0.0 .
 kubectl rollout restart deployment -n infrastructure grpc-core-service
 ```
 
