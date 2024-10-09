@@ -12,10 +12,12 @@
 1) Install docker-desktop and enable kubernetes
 2) Build docker image 
 ```
+cd ./grpc-chat-frontend
 docker build -t grpc-web-app-frontend:v1.0.0 .
 ```
 2) Run the commands below in the grpc-chat-frontend/deploy directory
 ```
+kubectl create namespace frontend
 kubectl apply -f deployment.yaml
 kubectl apply -f services.yaml
 kubectl apply -f ingress.yaml
