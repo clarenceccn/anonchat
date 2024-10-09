@@ -1,6 +1,10 @@
 package org.devteam1.util;
 
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -23,7 +27,7 @@ public class ChatGPTIntegration {
 
         // Prepare JSON request body for OpenAI
         JSONObject json = new JSONObject();
-        json.put("model", "text-davinci-003");
+        json.put("model", "text-davinci-002");
         json.put("prompt", "Summarize the following chatroom discussion:\n" + conversation.toString());
         json.put("max_tokens", 150);  // You can adjust this value depending on the summary length you want
 
