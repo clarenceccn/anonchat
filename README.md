@@ -41,6 +41,7 @@ kubectl rollout restart deployment -n frontend grpc-web-app-frontend-deployment
 ***Getting started with kubernetes for backend***
 1) Install docker desktop and enable kubernetes in settings then navigate to *./core-services/deploy/* and run commands below
 ```
+kubectl create namespace infrastructure
 kubectl apply -f envoy-config.yaml
 kubectl apply -f envoy-deployment.yaml
 kubectl apply -f grpc-backend-deployment.yaml
