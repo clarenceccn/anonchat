@@ -19,6 +19,7 @@ data:
                     "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                     stat_prefix: ingress_http
                     stream_idle_timeout: 0s
+                    http2_protocol_options: {} #enable grpc
                     route_config:
                       name: local_route
                       virtual_hosts:
@@ -55,7 +56,7 @@ data:
         - name: grpc-core-service
           connect_timeout: 0.25s
           type: logical_dns
-          http2_protocol_options: #enable grpc
+          http2_protocol_options: {} #enable grpc
           lb_policy: round_robin
           load_assignment:
             cluster_name: grpc-core-service

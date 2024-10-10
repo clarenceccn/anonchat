@@ -3,7 +3,6 @@ package org.devteam1.db;
 /* This is where the logic for storing and retrieving chat messages will be */
 
 
-import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class RedisClient {
      */
     private static final String REDIS_URL = System.getenv("REDIS_HOST");
     private static final int REDIS_PORT = Integer.parseInt(System.getenv("REDIS_PORT"));
+    private static final String SET_SUFFIX = "_set";
 
     public RedisClient() {
         System.out.println("Trying to connect to Redis on " + REDIS_URL + ":" + REDIS_PORT);
@@ -33,7 +33,7 @@ public class RedisClient {
             return;
         }
         jedis.rpush(key, value);
-        jedis.sadd(key, value);
+        jedis.sadd(key + SET_SUFFIX, value);
     }
 
     public String getValue(final String key) {
@@ -45,12 +45,12 @@ public class RedisClient {
     }
 
     public boolean exists(final String key, final String value) {
-        return jedis.sismember(key, value);
+        return jedis.sismember(key + SET_SUFFIX, value);
     }
 
     public void removeValue(final String key, final  String value) {
         jedis.lrem(key, 0, value);
-        jedis.srem(key, value);
+        jedis.srem(key + SET_SUFFIX, value);
     }
 
     public void close() {
