@@ -39,6 +39,7 @@ To load new changes
 kubectl rollout restart deployment -n frontend grpc-web-app-frontend-deployment
 ```
 ***Getting started with kubernetes for backend***
+
 0) Build docker image 
 ```
 ./gradlew build
