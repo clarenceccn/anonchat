@@ -127,7 +127,7 @@ export const Chat = () => {
                 <div ref={messagesEndRef} /> {/* Empty div to act as scroll target */}
             </div>
             </div>
-            <input
+            <input class="border-4"
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}

@@ -1,3 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Bubble';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../public/fonts/bubble.TTF') format('truetype');
+  }
+  html {
+      font-family: "Bubble", system-ui, sans-serif;
+  }
+}
+
+
+
 .App {
   text-align: center;
 }

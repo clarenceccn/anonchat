@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
-  content: [],
+  content: ["./src/**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+    fontFamily: {
+      'sans': ['"Bubble"', ...defaultTheme.fontFamily.sans],
+      custom: ['Bubble', 'sans-serif'], // Add custom font family
+    },
   },
+ },
   plugins: [],
 }
+
+
 
