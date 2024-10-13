@@ -1,94 +1,73 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChatMessage, ChatMessageRequest } from './proto/chat_pb';
-import { ChatRoomClient } from './proto/chat_grpc_web_pb';
+import React, { useState, useEffect, useRef } from 'react'
+import { ChatMessage, ChatMessageRequest } from './proto/chat_pb'
+import { ChatRoomClient } from './proto/chat_grpc_web_pb'
 
 // Initialize gRPC-Web client
-const chatClient = new ChatRoomClient('http://localhost:8080', null, null);
+const chatClient = new ChatRoomClient('http://localhost:8080', null, null)
 
 export const Chat = () => {
-    const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState([]);
-    const messagesEndRef = useRef(null); // Create a ref for the end of the messages
+    const [messages, setMessages] = useState([])
+    const [newMessage, setNewMessage] = useState([])
+    const messagesEndRef = useRef(null) // Create a ref for the end of the messages
 
 
     useEffect(() => {
         // Example of streaming messages from the server
-        const receiveRequest = new ChatMessageRequest();
-        receiveRequest.setUsername("test");
-        receiveRequest.setChatroomid("chatroom1");
-        const stream = chatClient.subscribeToMessages(receiveRequest);
+        const receiveRequest = new ChatMessageRequest()
+        receiveRequest.setUsername("test")
+        receiveRequest.setChatroomid("chatroom1")
+        const stream = chatClient.subscribeToMessages(receiveRequest)
 
         // listen for incoming messages
         stream.on('data', (response) => {
-            console.log(response);
-            const message = response;
-            setMessages((prevMessages) => [...prevMessages, message]);
-        });
+            console.log(response)
+            const message = response
+            setMessages((prevMessages) => [...prevMessages, message])
+        })
 
         stream.on('end', () => {
-            console.log("Stream ended.");
-        });
+            console.log("Stream ended.")
+        })
 
         return () => {
-            // stream.cancel();
-        };
+            // stream.cancel()
+        }
 
-    }, []);
+    }, [])
 
     const sendMessage = () => {
-        const message = new ChatMessage();
-        message.setUsername('test');
-        message.setMessage(newMessage);
-        message.setChatroomid("chatroom1");
-        message.setTimestamp(new Date().toISOString());
+        const message = new ChatMessage()
+        message.setUsername('test')
+        message.setMessage(newMessage)
+        message.setChatroomid("chatroom1")
+        message.setTimestamp(new Date().toISOString())
 
         chatClient.sendMessage(message, null, (err, response) => {
             if (err) {
-                console.error("ERROR happened", err);
+                console.error("ERROR happened", err)
             } else {
-                console.log("Message sent successfully");
+                console.log("Message sent successfully")
             }
-        });
-        setNewMessage('');
-    };
-
-    const refreshMessage = () => {
-        console.log("refreshing messages")
-        const receiveRequest = new ChatMessageRequest();
-        receiveRequest.setUsername("test");
-        receiveRequest.setChatroomid("chatroom1");
-        const stream = chatClient.subscribeToMessages(receiveRequest);
-        setMessages([]);
-        stream.on('data', (response) => {
-            const message = response;
-            console.log("called receive messages " + message)
-            setMessages((prevMessages) => [...prevMessages, message]);        
-        });
-        stream.on('end', () => {
-            console.log("Stream ended.");
-        });
-
-        stream.on('end', () => {
-            console.log("Stream ended.");
-        });
-    };
+        })
+        setNewMessage('')
+    }
 
     useEffect(() => {
         // Function to scroll to the bottom when new messages arrive
         const scrollToBottom = () => {
             if (messagesEndRef.current) {
-                messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+                messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
             }
-        };
+        }
 
-        scrollToBottom(); // Scroll to bottom when the component mounts
-    }, [messages]); // Dependency on messages to scroll when they change
+        scrollToBottom() // Scroll to bottom when the component mounts
+    }, [messages]) // Dependency on messages to scroll when they change
 
   // Helper function to format timestamps
     const formatTimestamp = (timestamp) => {
-        const date = new Date(timestamp);
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-    };
+        const date = new Date(timestamp)
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+    }
     return (
         <div>
             <h1>Chat Room</h1>
@@ -127,19 +106,19 @@ export const Chat = () => {
                 <div ref={messagesEndRef} /> {/* Empty div to act as scroll target */}
             </div>
             </div>
-            <input class="border-4"
+            <input className="border-4"
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message"
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                        document.getElementById('sendButton').click();
+                        document.getElementById('sendButton').click()
                     }
                 }}
             />
             <button id="sendButton" onClick={sendMessage}>Send</button>
             <button onClick={refreshMessage}>Refresh</button>
         </div>
-    );
-};
+    )
+}
