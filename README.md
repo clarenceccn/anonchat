@@ -51,7 +51,7 @@ docker build -t grpc-core-service-image:v1.0.0 .
 kubectl create namespace infrastructure
 kubectl apply -f envoy-config.yaml
 kubectl apply -f envoy-deployment.yaml
-kubectl apply -f grpc-backend-deployment.yaml
+kubectl apply -f grpc-service-deployment.yaml
 kubectl apply -f redis-deployment.yaml
 ```
 
