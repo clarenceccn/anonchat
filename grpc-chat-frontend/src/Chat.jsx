@@ -10,31 +10,49 @@ export const Chat = () => {
     const [newMessage, setNewMessage] = useState([])
     const messagesEndRef = useRef(null) // Create a ref for the end of the messages
 
+// this is commented out to use frontend dev hot reload purposes with no backend
+//     useEffect(() => {
+//         // Example of streaming messages from the server
+//         const receiveRequest = new ChatMessageRequest()
+//         receiveRequest.setUsername("test")
+//         receiveRequest.setChatroomid("chatroom1")
+//         const stream = chatClient.subscribeToMessages(receiveRequest)
+//
+//         // listen for incoming messages
+//         stream.on('data', (response) => {
+//             console.log(response)
+//             const message = response
+//             setMessages((prevMessages) => [...prevMessages, message])
+//         })
+//
+//         stream.on('end', () => {
+//             console.log("Stream ended.")
+//         })
+//
+//         return () => {
+//             // stream.cancel()
+//         }
+//
+//     }, [])
 
-    useEffect(() => {
-        // Example of streaming messages from the server
-        const receiveRequest = new ChatMessageRequest()
-        receiveRequest.setUsername("test")
-        receiveRequest.setChatroomid("chatroom1")
-        const stream = chatClient.subscribeToMessages(receiveRequest)
+//     const sendMessage = () => {
+//         const message = new ChatMessage()
+//         message.setUsername('test')
+//         message.setMessage(newMessage)
+//         message.setChatroomid("chatroom1")
+//         message.setTimestamp(new Date().toISOString())
+//
+//         chatClient.sendMessage(message, null, (err, response) => {
+//             if (err) {
+//                 console.error("ERROR happened", err)
+//             } else {
+//                 console.log("Message sent successfully")
+//             }
+//         })
+//         setNewMessage('')
+//     }
 
-        // listen for incoming messages
-        stream.on('data', (response) => {
-            console.log(response)
-            const message = response
-            setMessages((prevMessages) => [...prevMessages, message])
-        })
-
-        stream.on('end', () => {
-            console.log("Stream ended.")
-        })
-
-        return () => {
-            // stream.cancel()
-        }
-
-    }, [])
-
+    //for hot reload dev purposes
     const sendMessage = () => {
         const message = new ChatMessage()
         message.setUsername('test')
@@ -42,13 +60,7 @@ export const Chat = () => {
         message.setChatroomid("chatroom1")
         message.setTimestamp(new Date().toISOString())
 
-        chatClient.sendMessage(message, null, (err, response) => {
-            if (err) {
-                console.error("ERROR happened", err)
-            } else {
-                console.log("Message sent successfully")
-            }
-        })
+        setMessages((prevMessages) => [...prevMessages, message])
         setNewMessage('')
     }
 
@@ -118,7 +130,6 @@ export const Chat = () => {
                 }}
             />
             <button id="sendButton" onClick={sendMessage}>Send</button>
-            <button onClick={refreshMessage}>Refresh</button>
         </div>
     )
 }
