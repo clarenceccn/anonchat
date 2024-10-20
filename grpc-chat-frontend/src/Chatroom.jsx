@@ -1,12 +1,13 @@
-import React from 'react';
-import { Chat } from './Chat';
+import React from 'react'
+import { Chat } from './Chat'
 import PrimaryButton from './components/PrimaryButton'
+import MessagesList from './components/MessagesList'
 
 const Chatroom = () => {
     return (
         <div className="App">
           <h1> hello world this is hot reload</h1>
-          <PrimaryButton> click me </PrimaryButton>
+          <MessagesList />
           <Chat />
         </div>
    );

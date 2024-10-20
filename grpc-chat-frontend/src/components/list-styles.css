@@ -1,0 +1,32 @@
+/* src/chatStyles.css */
+.chat-container {
+    @apply max-w-md mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg;
+}
+
+.chat-title {
+    @apply text-lg font-semibold mb-4;
+}
+
+.chat-list {
+    @apply h-64 overflow-y-scroll;
+}
+
+.chat-item {
+    @apply p-4 mb-2 rounded-lg;
+}
+
+.chat-item:hover {
+    @apply hover:bg-blue-100;
+}
+
+.chat-item-general {
+    @apply bg-gray-500;
+}
+
+.chat-item p {
+    font-weight: 700; /* font-bold */
+}
+
+.chat-item .text-sm {
+    @apply text-gray-500;
+}

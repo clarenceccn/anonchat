@@ -1,0 +1,47 @@
+.main-container {
+    @apply flex flex-col h-screen bg-gray-100 p-4;
+}
+
+.message-container {
+    @apply flex-grow overflow-y-scroll p-4 bg-white rounded-lg shadow-md mb-4;
+}
+
+.message-container-inner {
+    @apply space-y-4;
+}
+
+.message-item-other {
+    @apply flex;
+}
+
+.message-other {
+    @apply bg-blue-100 p-3 rounded-lg max-w-sm self-start;
+}
+
+.message-sender {
+    @apply font-semibold;
+}
+
+.message-text {
+    @apply text-gray-600;
+}
+
+.message-item-self {
+    @apply flex justify-end;
+}
+
+.message-self {
+    @apply bg-gray-200 p-3 rounded-lg max-w-sm self-end;
+}
+
+.input-container {
+    @apply flex items-center;
+}
+
+.input-properties {
+    @apply flex-grow p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300;
+}
+
+.send-button {
+    @apply ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600;
+}

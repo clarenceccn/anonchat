@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import './button-styles.css'
 
 const PrimaryButton = ({id, children, onClick, className}) => {
