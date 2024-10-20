@@ -11,7 +11,7 @@ module.exports = {
     },
   },
  },
-  plugins: [],
+  plugins: [],  // Add any necessary Tailwind plugins here
 }
 
 

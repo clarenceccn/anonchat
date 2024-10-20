@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ChatMessage, ChatMessageRequest } from './proto/chat_pb'
 import { ChatRoomClient } from './proto/chat_grpc_web_pb'
+import PrimaryButton from './components/PrimaryButton'
 
 // Initialize gRPC-Web client
 const chatClient = new ChatRoomClient('http://localhost:8080', null, null)
@@ -129,7 +130,7 @@ export const Chat = () => {
                     }
                 }}
             />
-            <button id="sendButton" onClick={sendMessage}>Send</button>
+            <PrimaryButton id="sendButton" onClick={sendMessage}>Send</PrimaryButton>
         </div>
     )
 }
