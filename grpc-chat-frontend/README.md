@@ -1,5 +1,6 @@
 # For development with hot reload/fast refresh
-npm start
+1. npm install
+2. npm start
 
 # For use with actual database backend testing purposes
 ## Building steps
