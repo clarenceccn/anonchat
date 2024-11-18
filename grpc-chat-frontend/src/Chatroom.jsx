@@ -1,6 +1,5 @@
 import React from 'react'
 import { Chat } from './Chat'
-import PrimaryButton from './components/PrimaryButton'
 import MessagesList from './components/MessagesList'
 
 const Chatroom = () => {

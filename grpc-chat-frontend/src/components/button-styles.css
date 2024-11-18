@@ -9,3 +9,7 @@
 .btn-blue:hover {
     @apply bg-blue-700;
 }
+
+.send-button {
+    @apply ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600;
+}

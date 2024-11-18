@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { ChatMessage, ChatMessageRequest } from '../proto/chat_pb'
+import { ChatRoomClient } from '../proto/chat_grpc_web_pb'
 import './message-list-styles.css'
+import SendButton from './SendButton'
 
 
 const MessagesList = () => {
+    const [messages, setMessages] = useState([])
+    const [newMessage, setNewMessage] = useState([])
+    const messagesEndRef = useRef(null) // Create a ref for the end of the messages
+
+    const sendMessage = () => {
+        const message = new ChatMessage()
+        message.setUsername('test')
+        message.setMessage(newMessage)
+        message.setChatroomid("chatroom1")
+        message.setTimestamp(new Date().toISOString())
+        setMessages((prevMessages) => [...prevMessages, message])
+        setNewMessage('')
+    }
+
     return (
         <div className="main-container">
            {/* Message List */}
@@ -39,10 +56,16 @@ const MessagesList = () => {
                     type="text"
                     placeholder="Type your message..."
                     className="input-properties"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type a message"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            document.getElementById('sendButton').click()
+                        }
+                    }}
                 />
-                <button className="send-button">
-                    Send
-                </button>
+                <SendButton id="sendButton" onClick={sendMessage}>Send</SendButton>
             </div>
         </div>
     );
