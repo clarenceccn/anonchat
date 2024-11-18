@@ -1,0 +1,46 @@
+/* NavigationBar.css */
+
+/* Styles for the entire navbar */
+.navbar {
+  background-color: transparent;
+  padding: 16px;
+  max-width: 100%;
+}
+
+/* Center and align items within the navbar */
+.navbar-container {
+  @apply flex justify-start items-center max-w-screen-xl w-full;
+  max-height: calc(100vh - 120px);
+}
+
+/* Unordered list styling for the links */
+.navbar-links {
+  @apply list-none flex gap-5 p-0 m-0;
+  margin-right: auto;
+}
+
+.invite-button {
+  margin-left: auto;
+}
+
+/* Styling for each button */
+.button {
+  @apply bg-transparent border-2 border-black text-black py-2 px-4 rounded-lg text-lg cursor-pointer transition-all duration-300;
+  position: relative;
+  animation: 3s infinite alternate updown;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes updown {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 6px;
+    }
+}
+
+/* Hover effect for buttons */
+.navbar-button:hover {
+  @apply bg-white text-[#A6AEBF];
+}

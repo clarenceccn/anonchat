@@ -1,13 +1,25 @@
+/* Prevent scrolling on the entire site */
+html, body {
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling on the site */
+    margin: 0;
+}
+
 .main-container {
     @apply flex flex-col h-screen bg-gray-100 p-4;
+    overflow: hidden;
 }
 
 .message-container {
     @apply flex-grow overflow-y-scroll p-4 bg-white rounded-lg shadow-md mb-4;
+    max-height: 80%;
+    max-width: 100%;
 }
 
 .message-container-inner {
     @apply space-y-4;
+    max-height: none;
+    overflow-y: visible;
 }
 
 .message-item-other {
@@ -36,6 +48,12 @@
 
 .input-container {
     @apply flex items-center;
+    max-height: 80%%;
+    max-width: 100%;
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 10; /* Ensure the input is above the messages */
 }
 
 .input-properties {
@@ -44,4 +62,16 @@
 
 .send-button {
     @apply ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600;
+    position: relative;
+    animation: 3s infinite alternate updown;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes updown {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 6px;
+    }
 }

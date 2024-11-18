@@ -1,5 +1,17 @@
 .btn {
-    @apply font-bold py-2 px-4 rounded;
+    @apply ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600;
+    position: relative;
+    animation: 3s infinite alternate updown;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes updown {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 15px;
+    }
 }
 
 .btn-blue {
@@ -8,4 +20,8 @@
 
 .btn-blue:hover {
     @apply bg-blue-700;
+}
+
+.outline {
+    @apply bg-transparent border-2 border-black text-black py-2 px-4 rounded-lg text-lg cursor-pointer transition-all
 }

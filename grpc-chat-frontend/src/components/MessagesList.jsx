@@ -33,7 +33,6 @@ const MessagesList = () => {
                 </div>
             </div>
 
-            {/* Input Field and Send Button */}
             <div className="input-container">
                 <input
                     type="text"
@@ -44,6 +43,7 @@ const MessagesList = () => {
                     Send
                 </button>
             </div>
+
         </div>
     );
 };

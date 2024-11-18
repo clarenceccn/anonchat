@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { ChatMessage, ChatMessageRequest } from './proto/chat_pb'
 import { ChatRoomClient } from './proto/chat_grpc_web_pb'
 import PrimaryButton from './components/PrimaryButton'
+import './components/button-styles.css';
+import './components/message-list-styles.css'
 
 // Initialize gRPC-Web client
 const chatClient = new ChatRoomClient('http://localhost:8080', null, null)
@@ -119,7 +121,7 @@ export const Chat = () => {
                 <div ref={messagesEndRef} /> {/* Empty div to act as scroll target */}
             </div>
             </div>
-            <input className="border-4"
+            <input className="outline"
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
