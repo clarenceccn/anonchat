@@ -8,7 +8,9 @@ const Chatbox = () => {
     return (
         <div className="App">
           <NavigationBar />
-          <MessagesList />
+          <div>
+            <Chat />
+          </div>
         </div>
 
    );

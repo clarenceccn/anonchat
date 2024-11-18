@@ -1,7 +1,6 @@
 /* Prevent scrolling on the entire site */
 html, body {
-    height: 100%;
-    overflow: hidden; /* Prevent scrolling on the site */
+    overflow: hidden; /*Prevent scrolling on the site */
     margin: 0;
 }
 

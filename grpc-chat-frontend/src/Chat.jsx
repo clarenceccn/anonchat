@@ -75,7 +75,7 @@ export const Chat = () => {
             }
         }
 
-        scrollToBottom() // Scroll to bottom when the component mounts
+       // scrollToBottom() // Scroll to bottom when the component mounts
     }, [messages]) // Dependency on messages to scroll when they change
 
   // Helper function to format timestamps
@@ -84,55 +84,46 @@ export const Chat = () => {
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
     }
     return (
-        <div>
-            <h1>Chat Room</h1>
-            <div
-                id="messageContainer"
-                style={{
-                    height: '300px', // Set the height to your desired value
-                    overflowY: 'auto', // Enable vertical scrolling
-                    border: '1px solid #ccc',
-                    padding: '10px',
-                    marginBottom: '10px'
-                }}
-            >
-
-            <div style={{ maxHeight: '400px', overflowY: 'scroll' }}>
-                {messages.map((msg, index) => (
-                    <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '5px' }}>
-                        <div style={{ flexGrow: 1, display: 'flex', alignItems: 'flex-start', marginRight: '10px' }}>
-                            <strong style={{ whiteSpace: 'nowrap' }}>{msg.getUsername()}:</strong>
-                            <span style={{
-                                marginLeft: '5px',
-                                wordWrap: 'break-word',
-                                maxWidth: 'calc(100% - 120px)',
-                                overflowWrap: 'break-word',
-                                whiteSpace: msg.getMessage().length > 100 ? 'normal' : 'nowrap',
-                                textAlign: 'left'
-                            }}>
-                                {msg.getMessage()}
-                            </span>
-                        </div>
-                        <span style={{ fontSize: '0.8em', color: 'gray', whiteSpace: 'nowrap' }}>
-                            {formatTimestamp(msg.getTimestamp())}
-                        </span>
+            <div className="main-container">
+                <h1>Chat Room</h1>
+                {/* Message List */}
+                <div className="message-container">
+                    <div className="message-container-inner">
+                        {messages.map((msg, index) => (
+                            <div
+                                key={index}
+                                className={`message-item-${msg.getUsername() === 'test' ? 'self' : 'other'}`}
+                            >
+                                <div
+                                    className={`message-${msg.getUsername() === 'test' ? 'self' : 'other'}`}
+                                >
+                                    <p className="message-user">{msg.getUsername()}</p>
+                                    <p className="message-text">{msg.getMessage()}</p>
+                                </div>
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} /> {/* Empty div to act as scroll target */}
                     </div>
-                ))}
-                <div ref={messagesEndRef} /> {/* Empty div to act as scroll target */}
+                </div>
+
+                {/* Input Box */}
+                <div className="input-container">
+                    <input
+                        type="text"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Type your message..."
+                        className="input-properties"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                document.getElementById('sendButton').click();
+                            }
+                        }}
+                    />
+                    <PrimaryButton id="sendButton" onClick={sendMessage}>
+                        Send
+                    </PrimaryButton>
+                </div>
             </div>
-            </div>
-            <input className="outline"
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message"
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        document.getElementById('sendButton').click()
-                    }
-                }}
-            />
-            <PrimaryButton id="sendButton" onClick={sendMessage}>Send</PrimaryButton>
-        </div>
-    )
-}
+        );
+    };

@@ -7,7 +7,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="App">
+        <div className="App" style={{ padding: '10px' }}>
             <NavigationBar/>
           <h1 className="text-3xl font-bold underline">
               Welcome to AnOnChat!
